@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +11,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::post('register', 'API\UserController@signUp');
+Route::post('login', 'API\UserController@signIn');
+Route::post('logout', 'API\UserController@signOut')->middleware('auth:api');
+
+Route::apiResource('threads', 'API\ThreadController');
+Route::apiResource('replies', 'API\ThreadController');
