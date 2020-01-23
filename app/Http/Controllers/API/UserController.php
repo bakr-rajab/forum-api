@@ -23,16 +23,30 @@ class UserController extends Controller
      */
     public function signUp(RegisterRequest $request)
     {
-        $res = $this->userRepo->register($request);
-        return response()->json($res);
+        $validator = $request->validated();
+        if (!$validator) {
+            return response()->json(['error' => true,
+                'messages' => $validator
+            ], 401);
+        } else {
+            $request['password'] = bcrypt($request->input('password'));
+            $res = $this->userRepo->register($request);
+            return response()->json($res);
+        }
     }
 
     public function signIn(LoginRequest $request)
     {
-        $res = $this->userRepo->login($request);
-        return response()->json($res);
+        if ($request->validated()) {
+            $res = $this->userRepo->login($request);
+            return response()->json($res);
+        } else {
+            return response()->json(['error' => $request->validated()], 401);
+        }
+
     }
- public function signOut()
+
+    public function signOut()
     {
         $res = $this->userRepo->apiLogout();
         return response()->json($res);

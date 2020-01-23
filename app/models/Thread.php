@@ -4,9 +4,12 @@ namespace App\models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\HasApiTokens;
+
 
 class Thread extends Model
 {
+    use HasApiTokens;
     protected $fillable=[
         'title','body','user_id'
     ];

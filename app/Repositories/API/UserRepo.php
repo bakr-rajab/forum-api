@@ -39,35 +39,22 @@ class UserRepo extends BaseRepository
 
     public function login($request)
     {
-        if ($request->validated()) {
-            if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-                $user = Auth::user();
-                $userToken = $user->createToken(request('email'));
-                $token = $userToken->token;
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+            $user = Auth::user();
+            $userToken = $user->createToken(request('email'));
+            $token = $userToken->token;
 
-                $token->save();
-                return response()->json([
-                    'token' => $userToken->accessToken,
-                    'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-                ], 200);
-            } else {
-                return response()->json(['error' => 'Unauthorised',], 401);
-            }
-        } else
-            return response()->json(['error' => $request->validated()], 401);
-
+            $token->save();
+            return response()->json([
+                'token' => $userToken->accessToken,
+                'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
+            ], 200);
+        }
     }
 
     public function register($request)
     {
-//        $role = Role::create(['name' => 'customer']);
-        $validator = $request->validated();
-        if (!$validator) {
-            return response()->json(['error' => true,
-                'messages' => $validator
-            ], 401);
-        } else {
-            $request['password'] = bcrypt($request->input('password'));
+
             $user = $this->create($request->all());
             $user->assignRole('customer');
             $userToken = $user->createToken($user->email);
@@ -77,7 +64,6 @@ class UserRepo extends BaseRepository
                 'token' => $userToken->accessToken,
                 'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
             ], 200);
-        }
     }
 
     public function apiLogout()

@@ -18,3 +18,7 @@ Route::post('logout', 'API\UserController@signOut')->middleware('auth:api');
 
 Route::apiResource('threads', 'API\ThreadController');
 Route::apiResource('replies', 'API\ThreadController');
+
+Route::get('/users', function () {
+    return \App\User::all();
+});
