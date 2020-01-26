@@ -23,7 +23,9 @@ class ThreadResource extends JsonResource
             'body' => $this->body,
             'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
-            'user' => $this->user->name
+            'user' => new UserResource($this->whenLoaded('user')),
+//            'user' => $this->user->name,
+            'replies'=>ReplyResource::collection($this->whenLoaded('replies')),
         ];
     }
 }

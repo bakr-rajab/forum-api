@@ -15,6 +15,7 @@
         "laravel/passport": "^8.1",
         "laravel/telescope": "^2.1",
         "laravel/tinker": "^2.0",
+        "mpociot/laravel-apidoc-generator": "^4.2",
         "spatie/laravel-permission": "^3.4"
     },
     "require-dev": {

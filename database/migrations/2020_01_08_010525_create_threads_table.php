@@ -17,9 +17,11 @@ class CreateThreadsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('body');
+            $table->unsignedBigInteger('chanel_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
+            $table->foreign('chanel_id')->references('id')->on('chanels');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

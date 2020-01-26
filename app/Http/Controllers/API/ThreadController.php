@@ -17,6 +17,7 @@ class ThreadController extends Controller
 
     public function __construct(ThreadRepo $threadRepo)
     {
+        $this->middleware('auth:api')->except(['index','show']);
         $this->threadRepo = $threadRepo;
     }
 

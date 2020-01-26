@@ -2,14 +2,10 @@
 
 namespace App\Repositories\API;
 
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
-use phpseclib\Crypt\Hash;
-use Spatie\Permission\Models\Role;
 
 //use Your Model
 
@@ -19,6 +15,7 @@ use Spatie\Permission\Models\Role;
 class UserRepo extends BaseRepository
 {
     protected $userClass;
+
     public function __construct()
     {
         parent::__construct();
@@ -55,15 +52,16 @@ class UserRepo extends BaseRepository
     public function register($request)
     {
 
-            $user = $this->create($request->all());
-            $user->assignRole('customer');
-            $userToken = $user->createToken($user->email);
-            $token = $userToken->token;
+        $user = $this->create($request->all());
 
-            return response()->json([
-                'token' => $userToken->accessToken,
-                'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-            ], 200);
+        $user->assignRole('member');
+        $userToken = $user->createToken($user->email);
+        $token = $userToken->token;
+
+        return response()->json([
+            'token' => $userToken->accessToken,
+            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
+        ], 200);
     }
 
     public function apiLogout()

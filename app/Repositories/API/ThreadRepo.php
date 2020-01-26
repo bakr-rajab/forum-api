@@ -21,6 +21,11 @@ class ThreadRepo extends BaseRepository
         return Thread::class;
     }
     public function getThreads(){
-        return $this->with('user')->get();
+        return $this->with('user','replies.user')->get();
+    }
+    public function addReply($reply,$id){
+
+        $thread=$this->getById($id);
+        return $thread->replies()->create($reply);
     }
 }
